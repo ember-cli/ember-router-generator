@@ -1,7 +1,7 @@
 var EmberRouterGenerator = require('../index.js');
 var assert = require('assert');
 var fs = require('fs');
-var astEquality = require('esprima-ast-equality');
+var astEquality = require('./helpers/esprima-ast-equality');
 var escodegen = require('escodegen');
 var expect = require('chai').expect;
 

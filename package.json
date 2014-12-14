@@ -16,14 +16,13 @@
   },
   "dependencies": {
     "es-simpler-traverser": "0.0.1",
-    "escodegen": "~1.4.1",
-    "esprima": "1.2.2",
+    "escodegen": "abuiles/escodegen",
+    "esprima": "abuiles/esprima#harmony-esnext",
     "lodash-node": "^2.4.1"
   },
   "devDependencies": {
     "assertion-error": "^1.0.0",
     "chai": "^1.9.1",
-    "esprima-ast-equality": "0.0.4",
     "mocha": "~1.19.0",
     "mocha-jshint": "0.0.9"
   },
