@@ -1,25 +1,36 @@
 {
-  "name": "ember-router-remap",
+  "name": "ember-router-generator",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
-    "test": "npm test"
+    "test": "mocha tests/**/*-test.js",
+    "ci": "mocha tests/**/*-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abuiles/ember-router-generator.git"
   },
   "dependencies": {
     "es-simpler-traverser": "0.0.1",
-    "escodegen": "~1.3.2",
-    "esprima": "git://github.com/esnext/esprima#harmony-esnext",
+    "escodegen": "~1.4.1",
+    "esprima": "1.2.2",
+    "lodash-node": "^2.4.1"
   },
   "devDependencies": {
     "assertion-error": "^1.0.0",
     "chai": "^1.9.1",
     "esprima-ast-equality": "0.0.4",
-    "mocha": "~1.19.0"
-  }
+    "mocha": "~1.19.0",
+    "mocha-jshint": "0.0.9"
+  },
   "author": "Adolfo Builes",
-  "license": "ISC"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abuiles/ember-router-remap/issues"
+  },
+  "homepage": "https://github.com/abuiles/ember-router-remap"
 }
