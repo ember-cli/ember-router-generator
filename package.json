@@ -1,6 +1,6 @@
 {
   "name": "ember-router-generator",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -29,7 +29,7 @@
   "author": "Adolfo Builes",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/abuiles/ember-router-remap/issues"
+    "url": "https://github.com/abuiles/ember-router-generator/issues"
   },
-  "homepage": "https://github.com/abuiles/ember-router-remap"
+  "homepage": "https://github.com/abuiles/ember-router-generator"
 }
