@@ -6,7 +6,7 @@ var recast = require('recast');
 var expect = require('chai').expect;
 
 
-describe('Ember Route Generator', function() {
+describe('Adding routes and resources', function() {
   it('adds resource', function() {
     var source = fs.readFileSync('./tests/fixtures/basic-route.js');
     var routes = new EmberRouterGenerator(source);
@@ -119,5 +119,62 @@ describe('Ember Route Generator', function() {
     });
 
     astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-edit-route.js'));
+  });
+});
+
+
+describe('Removing routes and resources', function() {
+  it('removes resource', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-resource.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos', {type: 'resource'});
+
+    astEquality(recast.print(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/basic-route.js'));
+  });
+
+  it('removes  routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+
+    var routes = new EmberRouterGenerator(source);
+    var newRoutes = routes.remove('bar');
+
+    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/basic-route.js'));
+  });
+
+  it('removes nested routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos/bar/baz');
+
+    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-bar-baz-remove-route.js'));
+  });
+
+  it('removes nested routes with children', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos/bar');
+
+    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
+  });
+
+  it('removes resource with children', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos');
+
+    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/basic-route.js'));
+  });
+
+  it('removes nested resources', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-bars-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos/bar');
+
+    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
   });
 });
