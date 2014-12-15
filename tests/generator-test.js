@@ -87,4 +87,37 @@ describe('Ember Route Generator', function() {
 
     astEquality(escodegen.generate(newRoutes.ast), fs.readFileSync('./tests/fixtures/bar-baz-foo-route.js'));
   });
+
+  it('adds route with path', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('edit', {
+      path: ':foo_id/edit', type: 'route'
+    });
+
+    astEquality(escodegen.generate(newRoutes.ast), fs.readFileSync('./tests/fixtures/edit-foo-route.js'));
+  });
+
+  it('adds resource with path', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('friends', {
+      path: 'account/friends', type: 'resource'
+    });
+
+    astEquality(escodegen.generate(newRoutes.ast), fs.readFileSync('./tests/fixtures/friends-resource.js'));
+  });
+
+  it('adds nested route with path', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-resource.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos/edit', {
+      path: ':foo_id/edit'
+    });
+
+    astEquality(escodegen.generate(newRoutes.ast), fs.readFileSync('./tests/fixtures/foos-edit-route.js'));
+  });
 });
