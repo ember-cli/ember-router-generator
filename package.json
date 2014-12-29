@@ -4,7 +4,7 @@
   "description": "MicroLib to add or remove routes and resources from your Ember.js router.",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "test": "tests"
   },
   "scripts": {
     "test": "mocha tests/**/*-test.js",
