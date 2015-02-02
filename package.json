@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "es-simpler-traverser": "0.0.1",
-    "recast": "^0.9.12"
+    "recast": "^0.9.16"
   },
   "devDependencies": {
     "assertion-error": "^1.0.0",
