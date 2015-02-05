@@ -184,6 +184,6 @@ describe('Removing routes and resources', function() {
 
     var newRoutes = routes.remove('baz/qux');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/missing-child-route.js'));
   });
 });
