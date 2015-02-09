@@ -177,4 +177,13 @@ describe('Removing routes and resources', function() {
 
     astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
   });
+
+  it('fails gracefully when removing a route that does not exist', function() {
+    var source = fs.readFileSync('./tests/fixtures/missing-child-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('baz/qux');
+
+    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/missing-child-route.js'));
+  });
 });
