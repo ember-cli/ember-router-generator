@@ -13,7 +13,7 @@ describe('Adding routes and resources', function() {
 
     var newRoutes = routes.add('foos', {type: 'resource'});
 
-    astEquality(recast.print(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
   });
 
   it('adds routes', function() {
@@ -22,7 +22,7 @@ describe('Adding routes and resources', function() {
     var routes = new EmberRouterGenerator(source);
     var newRoutes = routes.add('bar');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/bar-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-route.js'));
   });
 
   it('leaves untouched existing resources', function() {
@@ -31,7 +31,7 @@ describe('Adding routes and resources', function() {
 
     var newRoutes = routes.add('foos', {type: 'resource'});
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
   });
 
   it('leaves untouched existing routes', function() {
@@ -40,7 +40,7 @@ describe('Adding routes and resources', function() {
     var routes = new EmberRouterGenerator(source);
     var newRoutes = routes.add('bar');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/bar-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-route.js'));
   });
 
   it('add nested routes', function() {
@@ -49,7 +49,7 @@ describe('Adding routes and resources', function() {
 
     var newRoutes = routes.add('foos/bar', {type: 'route'});
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
   });
 
   it('add nested routes in existing nested route', function() {
@@ -58,7 +58,7 @@ describe('Adding routes and resources', function() {
 
     var newRoutes = routes.add('foos/bar/baz', {type: 'route'});
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js'));
   });
 
   it('add nested resources', function() {
@@ -67,7 +67,7 @@ describe('Adding routes and resources', function() {
 
     var newRoutes = routes.add('foos/bar', {type: 'resource'});
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-bars-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bars-route.js'));
   });
 
   it('supports nested routes', function() {
@@ -76,7 +76,7 @@ describe('Adding routes and resources', function() {
 
     var newRoutes = routes.add('bar/baz', {type: 'route'});
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/bar-baz-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-baz-route.js'));
   });
 
   it('supports deeply nested routes', function() {
@@ -85,7 +85,7 @@ describe('Adding routes and resources', function() {
 
     var newRoutes = routes.add('bar/baz/foo', {type: 'route'});
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/bar-baz-foo-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-baz-foo-route.js'));
   });
 
   it('adds route with path', function() {
@@ -96,7 +96,7 @@ describe('Adding routes and resources', function() {
       path: ':foo_id/edit', type: 'route'
     });
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/edit-foo-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/edit-foo-route.js'));
   });
 
   it('adds resource with path', function() {
@@ -107,7 +107,7 @@ describe('Adding routes and resources', function() {
       path: 'account/friends', type: 'resource'
     });
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/friends-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/friends-resource.js'));
   });
 
   it('adds nested route with path', function() {
@@ -118,7 +118,15 @@ describe('Adding routes and resources', function() {
       path: ':foo_id/edit'
     });
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-edit-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-edit-route.js'));
+  });
+  it('adds routes even if other statements are present in the route', function() {
+    var source = fs.readFileSync('./tests/fixtures/route-with-if.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos/bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-if-adding.js'));
   });
 });
 
@@ -130,7 +138,7 @@ describe('Removing routes and resources', function() {
 
     var newRoutes = routes.remove('foos', {type: 'resource'});
 
-    astEquality(recast.print(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/basic-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
   it('removes  routes', function() {
@@ -139,7 +147,7 @@ describe('Removing routes and resources', function() {
     var routes = new EmberRouterGenerator(source);
     var newRoutes = routes.remove('bar');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/basic-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
   it('removes nested routes', function() {
@@ -148,7 +156,7 @@ describe('Removing routes and resources', function() {
 
     var newRoutes = routes.remove('foos/bar/baz');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-bar-baz-remove-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-baz-remove-route.js'));
   });
 
   it('removes nested routes with children', function() {
@@ -157,7 +165,7 @@ describe('Removing routes and resources', function() {
 
     var newRoutes = routes.remove('foos/bar');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
   });
 
   it('removes resource with children', function() {
@@ -166,7 +174,7 @@ describe('Removing routes and resources', function() {
 
     var newRoutes = routes.remove('foos');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/basic-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
   it('removes nested resources', function() {
@@ -175,7 +183,7 @@ describe('Removing routes and resources', function() {
 
     var newRoutes = routes.remove('foos/bar');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
   });
 
   it('fails gracefully when removing a route that does not exist', function() {
@@ -184,6 +192,14 @@ describe('Removing routes and resources', function() {
 
     var newRoutes = routes.remove('baz/qux');
 
-    astEquality(recast.prettyPrint(newRoutes.ast).code, fs.readFileSync('./tests/fixtures/missing-child-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/missing-child-route.js'));
+  });
+  it('remove routes even if other statements are present in the route', function() {
+    var source = fs.readFileSync('./tests/fixtures/route-with-if.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-if-removing.js'));
   });
 });
