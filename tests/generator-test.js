@@ -128,6 +128,14 @@ describe('Adding routes and resources', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-if-adding.js'));
   });
+  it('adds routes even if other expression statements are present', function() {
+    var source = fs.readFileSync('./tests/fixtures/route-with-other-expressions.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-other-expressions-adding.js'));
+  });
 });
 
 
@@ -201,5 +209,13 @@ describe('Removing routes and resources', function() {
     var newRoutes = routes.remove('foos');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-if-removing.js'));
+  });
+  it('removes routes even if other expression statements are present', function() {
+    var source = fs.readFileSync('./tests/fixtures/route-with-other-expressions-adding.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-other-expressions.js'));
   });
 });
