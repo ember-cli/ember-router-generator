@@ -120,6 +120,7 @@ describe('Adding routes and resources', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-edit-route.js'));
   });
+
   it('adds routes even if other statements are present in the route', function() {
     var source = fs.readFileSync('./tests/fixtures/route-with-if.js');
     var routes = new EmberRouterGenerator(source);
@@ -128,6 +129,7 @@ describe('Adding routes and resources', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-if-adding.js'));
   });
+
   it('adds routes even if other expression statements are present', function() {
     var source = fs.readFileSync('./tests/fixtures/route-with-other-expressions.js');
     var routes = new EmberRouterGenerator(source);
@@ -135,6 +137,33 @@ describe('Adding routes and resources', function() {
     var newRoutes = routes.add('bar');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-other-expressions-adding.js'));
+  });
+
+  it('adds index route using an empty function', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('bar/index');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-index-route.js'));
+  });
+
+  it('adds index route using the route method when passing options', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('bar/index', { path: 'main' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-main-route.js'));
+  });
+
+  it('adds index route in intermediate index routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('bar/index/index');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-index-index-route.js'));
   });
 });
 
@@ -202,6 +231,7 @@ describe('Removing routes and resources', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/missing-child-route.js'));
   });
+
   it('remove routes even if other statements are present in the route', function() {
     var source = fs.readFileSync('./tests/fixtures/route-with-if.js');
     var routes = new EmberRouterGenerator(source);
@@ -210,6 +240,7 @@ describe('Removing routes and resources', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-if-removing.js'));
   });
+
   it('removes routes even if other expression statements are present', function() {
     var source = fs.readFileSync('./tests/fixtures/route-with-other-expressions-adding.js');
     var routes = new EmberRouterGenerator(source);
@@ -217,5 +248,32 @@ describe('Removing routes and resources', function() {
     var newRoutes = routes.remove('bar');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-other-expressions.js'));
+  });
+
+  it('uses empty functions to replace intermediate index routes (nested)', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-index-index-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar/index/index');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-index-route.js'));
+  });
+
+  it('uses empty functions to replace intermediate index routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-index-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar/index');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-route.js'));
+  });
+
+  it('removes index routes preserving the parent route options', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-main-index-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar/index/index');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-main-route.js'));
   });
 });
