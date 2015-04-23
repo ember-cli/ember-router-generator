@@ -6,48 +6,40 @@ var recast = require('recast');
 var expect = require('chai').expect;
 
 
-describe('Adding routes and resources', function() {
-  it('adds resource', function() {
-    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
-    var routes = new EmberRouterGenerator(source);
-
-    var newRoutes = routes.add('foos', {type: 'resource'});
-
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
-  });
-
+describe('Adding routes', function() {
   it('adds routes', function() {
     var source = fs.readFileSync('./tests/fixtures/basic-route.js');
 
     var routes = new EmberRouterGenerator(source);
-    var newRoutes = routes.add('bar');
+    var newRoutes = routes.add('foos');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-route.js'));
-  });
-
-  it('leaves untouched existing resources', function() {
-    var source = fs.readFileSync('./tests/fixtures/foos-resource.js');
-    var routes = new EmberRouterGenerator(source);
-
-    var newRoutes = routes.add('foos', {type: 'resource'});
-
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route.js'));
   });
 
   it('leaves untouched existing routes', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
 
     var routes = new EmberRouterGenerator(source);
-    var newRoutes = routes.add('bar');
+    var newRoutes = routes.add('foos');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route.js'));
   });
 
-  it('add nested routes', function() {
-    var source = fs.readFileSync('./tests/fixtures/foos-resource.js');
+
+  it('adds nested routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('foos/bar', {type: 'route'});
+    var newRoutes = routes.add('foos/bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
+  });
+
+  it('add nested routes in existing route', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos/bar');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
   });
@@ -56,67 +48,34 @@ describe('Adding routes and resources', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-bar-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('foos/bar/baz', {type: 'route'});
+    var newRoutes = routes.add('foos/bar/baz');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js'));
   });
 
-  it('add nested resources', function() {
-    var source = fs.readFileSync('./tests/fixtures/foos-resource.js');
-    var routes = new EmberRouterGenerator(source);
-
-    var newRoutes = routes.add('foos/bar', {type: 'resource'});
-
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bars-route.js'));
-  });
-
-  it('supports nested routes', function() {
+  it('adds deeply nested routes', function() {
     var source = fs.readFileSync('./tests/fixtures/basic-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('bar/baz', {type: 'route'});
+    var newRoutes = routes.add('foos/bar/baz');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-baz-route.js'));
-  });
-
-  it('supports deeply nested routes', function() {
-    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
-    var routes = new EmberRouterGenerator(source);
-
-    var newRoutes = routes.add('bar/baz/foo', {type: 'route'});
-
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-baz-foo-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js'));
   });
 
   it('adds route with path', function() {
     var source = fs.readFileSync('./tests/fixtures/basic-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('edit', {
-      path: ':foo_id/edit', type: 'route'
-    });
+    var newRoutes = routes.add('edit', { path: ':foo_id/edit' });
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/edit-foo-route.js'));
   });
 
-  it('adds resource with path', function() {
-    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
-    var routes = new EmberRouterGenerator(source);
-
-    var newRoutes = routes.add('friends', {
-      path: 'account/friends', type: 'resource'
-    });
-
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/friends-resource.js'));
-  });
-
   it('adds nested route with path', function() {
-    var source = fs.readFileSync('./tests/fixtures/foos-resource.js');
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('foos/edit', {
-      path: ':foo_id/edit'
-    });
+    var newRoutes = routes.add('foos/edit', { path: ':foo_id/edit' });
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-edit-route.js'));
   });
@@ -140,72 +99,72 @@ describe('Adding routes and resources', function() {
   });
 
   it('adds index route using an empty function', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('bar/index');
+    var newRoutes = routes.add('foos/index');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-index-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-route.js'));
   });
 
   it('adds index route using the route method when passing options', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('bar/index', { path: 'main' });
+    var newRoutes = routes.add('foos/index', { path: 'main' });
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-main-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-with-options-route.js'));
   });
 
   it('adds index route in intermediate index routes', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('bar/index/index');
+    var newRoutes = routes.add('foos/index/index');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-index-index-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-index-route.js'));
   });
 });
 
 
-describe('Removing routes and resources', function() {
-  it('removes resource', function() {
-    var source = fs.readFileSync('./tests/fixtures/foos-resource.js');
-    var routes = new EmberRouterGenerator(source);
-
-    var newRoutes = routes.remove('foos', {type: 'resource'});
-
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
-  });
-
-  it('removes  routes', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-route.js');
+describe('Removing routes', function() {
+  it('removes routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
 
     var routes = new EmberRouterGenerator(source);
-    var newRoutes = routes.remove('bar');
+    var newRoutes = routes.remove('foos');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
   it('removes nested routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos/bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-route.js'));
+  });
+
+  it('removes deeply nested routes', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
     var routes = new EmberRouterGenerator(source);
 
     var newRoutes = routes.remove('foos/bar/baz');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-baz-remove-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-index-route.js'));
   });
 
-  it('removes nested routes with children', function() {
-    var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
+  it('removes routes with children', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-bar-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.remove('foos/bar');
+    var newRoutes = routes.remove('foos');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
-  it('removes resource with children', function() {
+  it('removes routes with deeply nested children', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
     var routes = new EmberRouterGenerator(source);
 
@@ -214,22 +173,22 @@ describe('Removing routes and resources', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
-  it('removes nested resources', function() {
-    var source = fs.readFileSync('./tests/fixtures/foos-bars-route.js');
+  it('fails gracefully when removing a route that does not exist', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.remove('foos/bar');
+    var newRoutes = routes.remove('foos');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-resource.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
-  it('fails gracefully when removing a route that does not exist', function() {
-    var source = fs.readFileSync('./tests/fixtures/missing-child-route.js');
+  it('fails gracefully when removing a nested route that does not exist', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.remove('baz/qux');
+    var newRoutes = routes.remove('foos/qux');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/missing-child-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route.js'));
   });
 
   it('remove routes even if other statements are present in the route', function() {
@@ -250,30 +209,30 @@ describe('Removing routes and resources', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/route-with-other-expressions.js'));
   });
 
-  it('uses empty functions to replace intermediate index routes (nested)', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-index-index-route.js');
+  it('uses empty functions to replace intermediate index routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-index-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.remove('bar/index/index');
+    var newRoutes = routes.remove('foos/index');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-index-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route.js'));
   });
 
-  it('uses empty functions to replace intermediate index routes', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-index-route.js');
+  it('uses empty functions to replace nested intermediate index routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-index-index-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.remove('bar/index');
+    var newRoutes = routes.remove('foos/index/index');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-route.js'));
   });
 
   it('removes index routes preserving the parent route options', function() {
-    var source = fs.readFileSync('./tests/fixtures/bar-main-index-route.js');
+    var source = fs.readFileSync('./tests/fixtures/foos-index-with-options-index-route.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.remove('bar/index/index');
+    var newRoutes = routes.remove('foos/index/index');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-main-route.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-with-options-route.js'));
   });
 });

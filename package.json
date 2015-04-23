@@ -1,7 +1,7 @@
 {
   "name": "ember-router-generator",
   "version": "0.4.0",
-  "description": "MicroLib to add or remove routes and resources from your Ember.js router.",
+  "description": "MicroLib to add or remove routes from your Ember.js router.",
   "main": "index.js",
   "directories": {
     "test": "tests"
