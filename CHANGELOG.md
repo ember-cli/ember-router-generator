@@ -1,5 +1,12 @@
 # ember-router-generator Changelog
 
+## 1.0.0
+
+Removes support for `resource` routes. Now only `route` is supported.
+
+See [#11](https://github.com/ember-cli/ember-router-generator/pull/11)
+for more info.
+
 ### 0.4.0
 
 Adds special handling for index routes. When running `ember g route
