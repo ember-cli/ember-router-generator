@@ -235,4 +235,31 @@ describe('Removing routes', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-with-options-route.js'));
   });
+
+  it('can pass the resetNamespace option', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos', { resetNamespace: true });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-with-reset-namespace-option.js'));
+  });
+
+  it('can pass the resetNamespace and path options', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('edit', { path: ':foo_id/edit', resetNamespace: false });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/edit-foo-route-with-reset-namespace-option.js'));
+  });
+
+  it('can pass the resetNamespace option in nested routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos/bar', { resetNamespace: true });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route-with-reset-namespace-option.js'));
+  });
 });

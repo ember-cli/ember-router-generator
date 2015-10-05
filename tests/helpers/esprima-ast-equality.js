@@ -12,6 +12,7 @@ EqualityError.prototype.constructor = EqualityError;
 
 var assert = require('assert');
 var esprima = require('esprima');
+var recast = require('recast');
 
 module.exports = function(actual, expected, message) {
   var parsedActual   = esprima.parse(actual);
@@ -21,8 +22,8 @@ module.exports = function(actual, expected, message) {
 
   if (!seemEqual) {
     throw new EqualityError(message || "AST equality failed",
-      parsedActual,
-      parsedExpected
+      recast.print(parsedActual).code,
+      recast.print(parsedExpected).code
     );
   }
 };
