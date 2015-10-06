@@ -1,5 +1,10 @@
 # ember-router-generator Changelog
 
+# 1.1.0
+
+Add support for `resetNamespace` when generating routes. For more info
+see [#12](https://github.com/ember-cli/ember-router-generator/pull/12).
+
 ## 1.0.0
 
 Removes support for `resource` routes. Now only `route` is supported.
