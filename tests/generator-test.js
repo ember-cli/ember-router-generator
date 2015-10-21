@@ -262,4 +262,17 @@ describe('Removing routes', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route-with-reset-namespace-option.js'));
   });
+
+  it('can add several routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes
+      .add('users', { resetNamespace: true })
+      .add('users/new')
+      .add('users/edit', { path: ':user_id/edit' })
+      .add('users/show', { path: ':user_id' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/user-route.js'));
+  });
 });
