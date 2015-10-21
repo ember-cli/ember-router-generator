@@ -124,6 +124,25 @@ describe('Adding routes', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-index-route.js'));
   });
+
+  it('ignores unknown options', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+
+    var routes = new EmberRouterGenerator(source);
+    var newRoutes = routes.add('foos', { foo: true, bar: false });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route.js'));
+  });
+
+  it('ignores unknown options when mixed with valid ones', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('edit', { path: ':foo_id/edit', unknow: 'something' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/edit-foo-route.js'));
+  });
+
 });
 
 
