@@ -1,5 +1,11 @@
 # ember-router-generator Changelog
 
+# 1.1.1
+
+Fix bug so route options object is not generated if there is no valid
+option.
+
+
 # 1.1.0
 
 Add support for `resetNamespace` when generating routes. For more info
