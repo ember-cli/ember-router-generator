@@ -62,6 +62,15 @@ describe('Adding routes', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js'));
   });
 
+  it('adds deeply nested routes with custom identifiers', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos/bar/baz', { identifier: 'mount' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-baz-mount.js'));
+  });
+
   it('adds route with path', function() {
     var source = fs.readFileSync('./tests/fixtures/basic-route.js');
     var routes = new EmberRouterGenerator(source);
@@ -71,6 +80,15 @@ describe('Adding routes', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/edit-foo-route.js'));
   });
 
+  it('adds route with custom identifier', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('blog', { identifier: 'mount' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/custom-identifier-route.js'));
+  });
+
   it('adds nested route with path', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-route.js');
     var routes = new EmberRouterGenerator(source);
@@ -78,6 +96,15 @@ describe('Adding routes', function() {
     var newRoutes = routes.add('foos/edit', { path: ':foo_id/edit' });
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-edit-route.js'));
+  });
+
+  it('adds nested route with path and custom identifier', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos/edit', { path: ':foo_id/edit', identifier: 'mount' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-edit-mount.js'));
   });
 
   it('adds routes even if other statements are present in the route', function() {
@@ -123,6 +150,15 @@ describe('Adding routes', function() {
     var newRoutes = routes.add('foos/index/index');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-index-route.js'));
+  });
+
+  it('adds index route in intermediate index routes with custom identifier', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos/index/index', { identifier: 'mount' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-index-mount.js'));
   });
 
   it('ignores unknown options', function() {
@@ -182,6 +218,15 @@ describe('Removing routes', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
 
+  it('removes routes with custom identifier', function() {
+    var source = fs.readFileSync('./tests/fixtures/custom-identifier-route.js');
+
+    var routes = new EmberRouterGenerator(source);
+    var newRoutes = routes.remove('blog', { identifier: 'mount' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
+  });
+
   it('removes nested routes', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-bar-route.js');
     var routes = new EmberRouterGenerator(source);
@@ -198,6 +243,15 @@ describe('Removing routes', function() {
     var newRoutes = routes.remove('foos/bar/baz');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-index-route.js'));
+  });
+
+  it('removes deeply nested routes with custom identifiers', function() {
+    var source = fs.readFileSync('./tests/fixtures/deeply-nested-custom-identifier.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('blog/ember/engines', { identifier: 'mount' });
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/edit-deeply-nested-custom-identifier.js'));
   });
 
   it('removes routes with children', function() {
