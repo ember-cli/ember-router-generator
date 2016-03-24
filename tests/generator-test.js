@@ -335,3 +335,14 @@ describe('Removing routes', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-with-options-route.js'));
   });
 });
+
+describe('esnext syntax compatibility', function() {
+  it('can add to a router file that uses destructuring', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route-with-destructuring.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foos');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route-with-destructuring.js'));
+  });
+});
