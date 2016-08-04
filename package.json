@@ -3,6 +3,7 @@
   "version": "1.2.1",
   "description": "MicroLib to add or remove routes from your Ember.js router.",
   "main": "index.js",
+  "files": ["index.js", "lib/"],
   "directories": {
     "test": "tests"
   },
