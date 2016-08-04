@@ -1,0 +1,6 @@
+/tests
+**/.gitkeep
+.gitignore
+.jshintrc
+.jshintignore
+.travis.yml
