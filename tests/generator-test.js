@@ -205,6 +205,15 @@ describe('Adding routes', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route-with-reset-namespace-option.js'));
   });
+
+  it('can add routes to a function declaration', function() {
+    var source = fs.readFileSync('./tests/fixtures/routes-in-function-declaration.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.add('foo/edit/preview');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/routes-in-function-declaration-adding.js'));
+  });
 });
 
 
@@ -333,6 +342,15 @@ describe('Removing routes', function() {
     var newRoutes = routes.remove('foos/index/index');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-with-options-route.js'));
+  });
+
+  it('can remove routes from a function declaration', function() {
+    var source = fs.readFileSync('./tests/fixtures/routes-in-function-declaration-adding.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foo/edit/preview');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/routes-in-function-declaration.js'));
   });
 });
 
