@@ -2,7 +2,7 @@ function fooRoutes() {
   this.route('step1');
   this.route('step2');
   this.route('step3');
-  this.route('preview');
+  this.route('step4');
 }
 
 Router.map(function() {

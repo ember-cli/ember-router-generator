@@ -207,12 +207,12 @@ describe('Adding routes', function() {
   });
 
   it('can add routes to a function declaration', function() {
-    var source = fs.readFileSync('./tests/fixtures/routes-in-function-declaration.js');
+    var source = fs.readFileSync('./tests/fixtures/routes-in-function-declaration-removed.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.add('foo/edit/preview');
+    var newRoutes = routes.add('foo/edit/step4');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/routes-in-function-declaration-adding.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/routes-in-function-declaration-added.js'));
   });
 });
 
@@ -345,12 +345,12 @@ describe('Removing routes', function() {
   });
 
   it('can remove routes from a function declaration', function() {
-    var source = fs.readFileSync('./tests/fixtures/routes-in-function-declaration-adding.js');
+    var source = fs.readFileSync('./tests/fixtures/routes-in-function-declaration-added.js');
     var routes = new EmberRouterGenerator(source);
 
-    var newRoutes = routes.remove('foo/edit/preview');
+    var newRoutes = routes.remove('foo/edit/step4');
 
-    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/routes-in-function-declaration.js'));
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/routes-in-function-declaration-removed.js'));
   });
 });
 
