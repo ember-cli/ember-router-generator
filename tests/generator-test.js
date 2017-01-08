@@ -334,6 +334,15 @@ describe('Removing routes', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-with-options-route.js'));
   });
+
+  it('removes routes that have an identically named nested route elsewhere', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-foos-bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
+  });
 });
 
 describe('esnext syntax compatibility', function() {
