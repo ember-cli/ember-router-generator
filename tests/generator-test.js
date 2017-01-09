@@ -236,6 +236,15 @@ describe('Removing routes', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-route.js'));
   });
 
+  it('does not remove nested routes inappropriately', function() {
+      var source = fs.readFileSync('./tests/fixtures/foos-bar-route.js');
+      var routes = new EmberRouterGenerator(source);
+
+      var newRoutes = routes.remove('bar');
+
+      astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
+  });
+
   it('removes deeply nested routes', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
     var routes = new EmberRouterGenerator(source);
