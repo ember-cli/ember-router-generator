@@ -3,3 +3,12 @@ node_js:
   - '0.12'
   - '4'
   - '6'
+
+deploy:
+  provider: npm
+  email: stefan.penner+ember-cli@gmail.com
+  api_key:
+    secure: mjbVCbbvGouyNmo3mi0anoUH4ktpfnSLwUYgJjnLUHQQVOHEmw/N41tEXCOv0IjZVjjMBknPs3T/aflcT6r8/zvpQjtT5F4n8/GL3Wy7DdG2P4NIm9S70EbyutETNhxx6axJA7TpHMUkQp24IyxRdt6hTqf9BGAws/tjQ3hZjR8=
+  on:
+    tags: true
+    repo: ember-cli/ember-router-generator
