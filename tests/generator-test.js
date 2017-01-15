@@ -236,6 +236,15 @@ describe('Removing routes', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-route.js'));
   });
 
+  it('does not remove nested routes inappropriately', function() {
+      var source = fs.readFileSync('./tests/fixtures/foos-bar-route.js');
+      var routes = new EmberRouterGenerator(source);
+
+      var newRoutes = routes.remove('bar');
+
+      astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
+  });
+
   it('removes deeply nested routes', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-bar-baz-route.js');
     var routes = new EmberRouterGenerator(source);
@@ -333,6 +342,24 @@ describe('Removing routes', function() {
     var newRoutes = routes.remove('foos/index/index');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-with-options-route.js'));
+  });
+
+  it('removes routes that have an identically named nested route after them', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-foos-bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
+  });
+
+  it('removes routes that have an identically named nested route before them', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-bar-post-bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
   });
 });
 
