@@ -361,6 +361,42 @@ describe('Removing routes', function() {
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
   });
+
+  it('removes duplicate copies of the specified top-level route', function() {
+    var source = fs.readFileSync('./tests/fixtures/double-foos-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
+  });
+
+  it('removes duplicate copies of the specified nested route', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-double-bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos/bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-index-route.js'));
+  });
+
+  it('removes duplicate copies of the specified top-level route when there is a preceding identically named nested route', function() {
+    var source = fs.readFileSync('./tests/fixtures/multi-bar-foos-bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-bar-route.js'));
+  });
+
+  it('removes duplicate copies of the specified nested route when there are identically named top-level routes', function() {
+    var source = fs.readFileSync('./tests/fixtures/bar-foos-double-bar-route.js');
+    var routes = new EmberRouterGenerator(source);
+
+    var newRoutes = routes.remove('foos/bar');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/bar-foos-index-route.js'));
+  });
 });
 
 describe('esnext syntax compatibility', function() {
