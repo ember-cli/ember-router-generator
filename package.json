@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "assertion-error": "^1.0.0",
-    "chai": "^3.5.0",
+    "chai": "^4.2.0",
     "esprima": "^2.7.2",
     "mocha": "^3.0.1",
     "mocha-jshint": "2.3.1"
