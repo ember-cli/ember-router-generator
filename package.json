@@ -33,5 +33,8 @@
   "bugs": {
     "url": "https://github.com/ember-cli/ember-router-generator/issues"
   },
-  "homepage": "https://github.com/ember-cli/ember-router-generator"
+  "homepage": "https://github.com/ember-cli/ember-router-generator",
+  "engines": {
+    "node": "6.* || 8.* || >= 10.*"
+  }
 }
