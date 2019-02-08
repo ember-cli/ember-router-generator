@@ -19,7 +19,7 @@
     "url": "https://github.com/ember-cli/ember-router-generator.git"
   },
   "dependencies": {
-    "recast": "^0.16.2"
+    "recast": "^0.17.3"
   },
   "devDependencies": {
     "assertion-error": "^1.1.0",
