@@ -1,10 +1,6 @@
 var EmberRouterGenerator = require('../index.js');
-var assert = require('assert');
 var fs = require('fs');
-var astEquality = require('./helpers/esprima-ast-equality');
-var recast = require('recast');
-var expect = require('chai').expect;
-
+var astEquality = require('./helpers/ast-equality');
 
 describe('Adding routes', function() {
   it('adds routes', function() {
@@ -14,6 +10,15 @@ describe('Adding routes', function() {
     var newRoutes = routes.add('foos');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route.js'));
+  });
+
+  it('handles files with class syntax', function() {
+    var source = fs.readFileSync('./tests/fixtures/class-syntax.js');
+
+    var routes = new EmberRouterGenerator(source);
+    var newRoutes = routes.add('foos');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/class-syntax-foos-route.js'));
   });
 
   it('leaves untouched existing routes', function() {
