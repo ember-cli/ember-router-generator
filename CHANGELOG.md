@@ -1,5 +1,10 @@
 # ember-router-generator Changelog
 
+# 2.0.0
+
+* Drop support for Node 4, 6, 9, and 11.
+* Added support for more modern syntax (e.g. `class` and decorators) in the `app/router.js` file
+
 # 1.1.1
 
 Fix bug so route options object is not generated if there is no valid
