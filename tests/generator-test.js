@@ -21,6 +21,15 @@ describe('Adding routes', function() {
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/class-syntax-foos-route.js'));
   });
 
+  it('adds routes with leading slash', function() {
+    var source = fs.readFileSync('./tests/fixtures/basic-route.js');
+
+    var routes = new EmberRouterGenerator(source);
+    var newRoutes = routes.add('/foos');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/foos-route.js'));
+  });
+
   it('leaves untouched existing routes', function() {
     var source = fs.readFileSync('./tests/fixtures/foos-route.js');
 
@@ -219,6 +228,15 @@ describe('Removing routes', function() {
 
     var routes = new EmberRouterGenerator(source);
     var newRoutes = routes.remove('foos');
+
+    astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
+  });
+
+  it('removes routes with leading slash', function() {
+    var source = fs.readFileSync('./tests/fixtures/foos-route.js');
+
+    var routes = new EmberRouterGenerator(source);
+    var newRoutes = routes.remove('/foos');
 
     astEquality(newRoutes.code(), fs.readFileSync('./tests/fixtures/basic-route.js'));
   });
