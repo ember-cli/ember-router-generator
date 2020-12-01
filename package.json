@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.12.7",
-    "@babel/traverse": "^7.12.1",
+    "@babel/traverse": "^7.12.9",
     "recast": "^0.19.1"
   },
   "devDependencies": {
