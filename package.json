@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/parser": "^7.14.0",
     "@babel/traverse": "^7.14.7",
-    "recast": "^0.19.1"
+    "recast": "^0.20.4"
   },
   "devDependencies": {
     "assertion-error": "^1.1.0",
