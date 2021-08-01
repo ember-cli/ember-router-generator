@@ -19,7 +19,7 @@
     "url": "https://github.com/ember-cli/ember-router-generator.git"
   },
   "dependencies": {
-    "@babel/parser": "^7.14.0",
+    "@babel/parser": "^7.14.8",
     "@babel/traverse": "^7.14.7",
     "recast": "^0.19.1"
   },
